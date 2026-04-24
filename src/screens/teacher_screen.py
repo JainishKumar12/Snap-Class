@@ -95,14 +95,14 @@ def teacher_tab_take_attendance():
         if st.button('Add photos' , type='primary', icon=":material/photo_prints:" , width='stretch'):
             add_photos_dialog()
 
-    seleceted_subject_id = subject_options(selected_subject_label)
+    selected_subject_id = subject_options[selected_subject_label]
     st.divider()
 
     if st.session_state.attendance_images:
         st.header("Added photos")
         gallery_cols = st.columns(4)
 
-        for idx , img in enumerate(st.session_state.attendance_iamges):
+        for idx , img in enumerate(st.session_state.attendance_images):
             with gallery_cols[idx % 4]:
                 st.image(img, width='stretch' , caption=f"Photo {idx+1}")
 
@@ -113,7 +113,7 @@ def teacher_tab_take_attendance():
             st.session_state.attendance_images = []
             st.rerun
     with c2:     
-        if st.button('Run Face Analysis' , width="stretch", type='secondary', icon=":material/analytics" , disabled=not has_photos):
+        if st.button('Run Face Analysis' , width="stretch", type='secondary', icon=":material/analytics:" , disabled=not has_photos):
             with st.spinner('Deep Scanning Classroom Images...'):
                 all_detected_ids = {}
 
@@ -127,7 +127,7 @@ def teacher_tab_take_attendance():
                             student_id = int(sid)
                             all_detected_ids.setdefault(student_id , []).append(f"Photo {idx+1}")
 
-                enrolled_res = supabase.table('subject_students').select("*, students(*)").eq('subject_id', seleceted_subject_id).execute()
+                enrolled_res = supabase.table('subject_students').select("*, students(*)").eq('subject_id', selected_subject_id).execute()
                 enrolled_students = enrolled_res.data
 
                 if not enrolled_students:
@@ -149,16 +149,16 @@ def teacher_tab_take_attendance():
 
                         attendance_to_log.append({
                             'student_id': student['student_id'], 
-                            'subject_id': seleceted_subject_id,
-                            'time_stamp': current_timestamp,
+                            'subject_id': selected_subject_id,
+                            'timestamp': current_timestamp,
                             'is_present': bool(is_present)
                         })
 
-                attendance_result_dialog(pd.DataFrame(results), attendance_to_log)
+                    attendance_result_dialog(pd.DataFrame(results), attendance_to_log)
 
     with c3:
         if st.button("Use Voice Attendance" , width='stretch' , type='primary' , icon=":material/mic:"):
-            voice_attendance_dialog(seleceted_subject_id)
+            voice_attendance_dialog(selected_subject_id)
 
 def teacher_tab_manage_subjects():
     teacher_id = st.session_state.teacher_data['teacher_id']
@@ -208,7 +208,7 @@ def teacher_tab_attendance_records():
             "Time": datetime.fromisoformat(ts).strftime("%Y %m %d %I:%M %p") if ts else 'N/A',
             "Subject": r['subjects']['name'],
             "Subject Code": r['subjects']['subject_code'],
-            "is_present": bool(r.get('is_present'), False)
+            "is_present": bool(r.get('is_present', False))
         })
 
         df = pd.DataFrame(data)
@@ -230,7 +230,7 @@ def teacher_tab_attendance_records():
                       [['Time' , 'Subject' , 'Subject Code' , 'Attendance Stats']]
                         )
         
-        st.dataframe(display_df , width='stretch' , hide_text=True)
+        st.dataframe(display_df , width='stretch' , hide_index=True)
 
 
 def login_teacher(username, password):
