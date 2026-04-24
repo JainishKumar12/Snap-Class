@@ -89,7 +89,7 @@ def teacher_tab_take_attendance():
 
     col1, col2 = st.columns([3,1], vertical_alignment='bottom')
     with col1:
-        selected_subject_label = st.selectbox("Select Subject" , options=list(subject_options.key()))
+        selected_subject_label = st.selectbox("Select Subject" , options=list(subject_options.keys()))
 
     with col2:
         if st.button('Add photos' , type='primary', icon=":material/photo_prints:" , width='stretch'):
