@@ -18,7 +18,7 @@ def home_screen():
             st.rerun()
     with col2:
         st.header("I'm Student")
-        st.image(r"src\Download_this_free_vector_of_Ai_Generated_Student_Schoolboy_from_Pixabay_s_vast_library_of_royalty-free_stock_images__videos_and_music_-removebg-preview.png", width=90)
+        st.image("src\Download_this_free_vector_of_Ai_Generated_Student_Schoolboy_from_Pixabay_s_vast_library_of_royalty-free_stock_images__videos_and_music_-removebg-preview.png", width=90)
         if st.button("Student portal", type='primary' , icon=":material/arrow_outward:" ,icon_position='right'):
             st.session_state['login_type'] = 'student'
             st.rerun()
