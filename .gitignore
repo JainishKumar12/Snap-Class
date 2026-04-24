@@ -5,7 +5,4 @@
 __pycache__/
 venv/
 .streamlit/
-__pycache__/
-*.pyc
-images/
 __init__.py
