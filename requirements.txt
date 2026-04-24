@@ -1,0 +1,22 @@
+# ml librairies 
+streamlit
+numpy 
+pandas 
+
+# face-recognition 
+scikit-learn 
+dlib-bin
+git+https://github.com/ageitgey/face_recognition_models
+setuptools<70.0.0
+
+# database
+supabase
+bcrypt  # -> used to do hatching on data that should be kept private even after getting leak in some cases 
+
+segno   # -> used to create Qr code 
+pillow  # -> to preprocess images in python
+
+
+
+librosa # -> to do audio processing in python
+resemblyzer 
