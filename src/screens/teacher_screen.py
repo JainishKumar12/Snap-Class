@@ -9,7 +9,7 @@ from src.components.dialog_subject_create import create_subject_dialog
 from src.components.subject_card import subject_card
 from src.components.dialog_share_subject import share_subject_dialog
 from src.components.dialog_add_photo import add_photos_dialog
-from components.dialog_attendance_result import attendance_result_dialog
+from src.components.dialog_attendance_result import attendance_result_dialog
 from src.pipelines.face_recognition import predict_attendance
 from src.components.dialog_voice_attendance import voice_attendance_dialog
 from src.database.config import supabase
