@@ -12,7 +12,7 @@ def home_screen():
 
     with col1:
         st.header("I'm Teacher")
-        st.image(r"C:\Users\VICTUS\OneDrive\Desktop\PROJECTS\SNAPSCORE\src\image_38f29397-removebg-preview.png", width=125)
+        st.image("src/image_38f29397-removebg-preview.png", width=125)
         if st.button("Teacher portal", type='primary', icon=":material/arrow_outward:" , icon_position='right'):
             st.session_state['login_type'] = 'teacher'
             st.rerun()
