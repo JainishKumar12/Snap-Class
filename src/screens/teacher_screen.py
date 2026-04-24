@@ -95,6 +95,10 @@ def teacher_tab_take_attendance():
         if st.button('Add photos' , type='primary', icon=":material/photo_prints:" , width='stretch'):
             add_photos_dialog()
 
+    if selected_subject_label not in subject_options:
+            st.warning("Please select a valid subject")
+            return
+    
     selected_subject_id = subject_options[selected_subject_label]
     st.divider()
 
@@ -174,18 +178,18 @@ def teacher_tab_manage_subjects():
         for sub in subjects:
             stats = ("👥", "Students", sub['total_students']), ("📅", "Classes", sub['total_classes'])
 
-        def share_btn():
-            if st.button(f"Share Code: {sub['name']}", key=f"share_{sub['subject_code']}", icon=":material/share:"):
-                share_subject_dialog(sub['name'] , sub['subject_code'])
-            st.space()
-            
-        subject_card(
-            name = sub['name'],
-            code = sub['subject_code'],
-            semester = sub['semester'],
-            stats=stats,
-            footer_callback=share_btn
-        )
+            def share_btn():
+                if st.button(f"Share Code: {sub['name']}", key=f"share_{sub['subject_code']}", icon=":material/share:"):
+                    share_subject_dialog(sub['name'] , sub['subject_code'])
+                st.space()
+                
+            subject_card(
+                name = sub['name'],
+                code = sub['subject_code'],
+                semester = sub['semester'],
+                stats=stats,
+                footer_callback=share_btn
+            )
     else:
         st.info("NO SUBJECTS FOUND. CREATE ONE ABOVE..")
 
@@ -211,26 +215,26 @@ def teacher_tab_attendance_records():
             "is_present": bool(r.get('is_present', False))
         })
 
-        df = pd.DataFrame(data)
+    df = pd.DataFrame(data)
 
-        summary = (
-            df.groupby(['ts_group', "Time", 'Subject' , 'Subject Code'])
-            .agg(
-                Present_Count = ('is_present', 'sum'),
-                Total_Count = ('is_present', 'count')
-            ).reset_index()
-        )
+    summary = (
+        df.groupby(['ts_group', "Time", 'Subject' , 'Subject Code'])
+        .agg(
+            Present_Count = ('is_present', 'sum'),
+            Total_Count = ('is_present', 'count')
+        ).reset_index()
+    )
 
-        summary['Attendance Stats'] =(
-            '✅' + summary['Present_Count'].astype(str) + " /" 
-            + summary['Total_Count'].astype(str) + 'Students'
-        )
+    summary['Attendance Stats'] =(
+        '✅' + summary['Present_Count'].astype(str) + " /" 
+        + summary['Total_Count'].astype(str) + 'Students'
+    )
 
-        display_df = (summary.sort_values(by='ts_group', ascending=False)
-                      [['Time' , 'Subject' , 'Subject Code' , 'Attendance Stats']]
-                        )
-        
-        st.dataframe(display_df , width='stretch' , hide_index=True)
+    display_df = (summary.sort_values(by='ts_group', ascending=False)
+                    [['Time' , 'Subject' , 'Subject Code' , 'Attendance Stats']]
+                    )
+    
+    st.dataframe(display_df , width='stretch' , hide_index=True)
 
 
 def login_teacher(username, password):
@@ -242,7 +246,7 @@ def login_teacher(username, password):
     if teacher:
         st.session_state.user_role = 'teacher'
         st.session_state.teacher_data = teacher
-        st.session_state.is_loged_in = True 
+        st.session_state.is_logged_in = True 
         return True 
     return False
 
